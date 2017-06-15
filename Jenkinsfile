@@ -4,7 +4,26 @@ pipeline {
     stage('test') {
       steps {
         echo 'test'
-        sleep 2
+      }
+    }
+    stage('pull') {
+      steps {
+        parallel(
+          "pull": {
+            retry(count: 10) {
+              error 'Failed'
+            }
+            
+            
+          },
+          "": {
+            waitUntil() {
+              dir(path: '/opt/')
+            }
+            
+            
+          }
+        )
       }
     }
   }
